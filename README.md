@@ -14,7 +14,7 @@ export SPACE_KEY=<the space key to touch and find failed pages>. Example: NHC
 ```
 
 ### To run the script
-#### To touch the space from REST
+#### To touch the pages in a space from REST
 ```
 npm run touch
 ```
@@ -24,4 +24,4 @@ Note: Please give few minutes before running below command
 npm run findpages
 ```
 
-Note: We recommend to touch the pages by space wise. You can keep update SPACE_KEY to check for respective spaces.
+Note: We recommend to touch the pages by space wise. You can keep update SPACE_KEY environment variable to check for respective spaces.
