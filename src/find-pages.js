@@ -23,6 +23,7 @@ async function doRun(space_key='') {
         const nhEnabledPages = await utils.getNhEnabledPages(space.id); //To get all the pages with NH enabled in the space
         const nhFailedPages = await findErrorPages(nhEnabledPages); //To get all the pages with NH enabled in the space
         if (nhFailedPages.length > 0) {
+            console.log(`space: ${space.key}, error pages#: ${nhFailedPages.length}`);
             console.log("nhFailedPages: ", nhFailedPages);
         } else {
             console.log("No pages found with error for space: ", space.key);
