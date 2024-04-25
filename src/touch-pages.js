@@ -2,14 +2,14 @@ const utils = require("./utils");
 
 const SPACE_KEY = process.env.SPACE_KEY;
 
-async function touchPages(nhEnabledPages, space_key) {
+async function touchPages(nhEnabledPages, space_name) {
     for (let pagedata of nhEnabledPages) {
         //console.log("pagedata before: ", pagedata);
         pagedata.nhconfig.version.number ++;
         //console.log("pagedata after: ", pagedata);
         await utils.updateNhProperty(pagedata.page_id, pagedata.nhconfig);
     }
-    console.log("All pages touched successfully for space: ", space_key);
+    console.log("All pages touched successfully for space: ", space_name);
 }
 
 async function doRun(space_key='') {
@@ -17,7 +17,7 @@ async function doRun(space_key='') {
     console.log('spaces#:', spaces.length);
     for (let space of spaces) {
         const nhEnabledPages = await utils.getNhEnabledPages(space.id); //To get all the pages with NH enabled in the space
-        await touchPages(nhEnabledPages, space.key); // To touch enabled pages for the migrated pages in a space
+        await touchPages(nhEnabledPages, space.name); // To touch enabled pages for the migrated pages in a space
     }
 }
 
