@@ -15,14 +15,19 @@ async function findErrorPages(nhEnabledPages) {
     return errorPages;
 }
 
-async function doRun(space_key) {
-    const nhEnabledPages = await utils.getNhEnabledPages(space_key);
-    const nhFailedPages = await findErrorPages(nhEnabledPages); //To get all the pages with NH enabled in the space
-    if (nhFailedPages.length > 0) {
-        console.log("nhFailedPages: ", nhFailedPages);
-    } else {
-        console.log("No pages found with error");
+async function doRun(space_key='') {
+
+    const spaces = await utils.getSpaces(); //To get all the spaces in the instance
+    console.log('spaces#:', spaces.length);
+    for (let space of spaces) {
+        const nhEnabledPages = await utils.getNhEnabledPages(space.id); //To get all the pages with NH enabled in the space
+        const nhFailedPages = await findErrorPages(nhEnabledPages); //To get all the pages with NH enabled in the space
+        if (nhFailedPages.length > 0) {
+            console.log("nhFailedPages: ", nhFailedPages);
+        } else {
+            console.log("No pages found with error for space: ", space.key);
+        }
     }
 }
 
-doRun(SPACE_KEY);
+doRun();

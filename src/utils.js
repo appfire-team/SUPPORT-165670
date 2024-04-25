@@ -5,6 +5,19 @@ const BASE_URL = process.env.BASE_URL;
 const NH_KEY = "nl_avisi_nh";
 const NH_STATE_KEY = "nl_avisi_nh_state";
 
+
+async function getSpaces(url='/api/v2/spaces?limit=250') {
+    url=`${BASE_URL}${url}`;
+    const spaces = await axios.get(url, {headers: {Authorization: `Basic ${API_KEY}`}});
+    let results = spaces.data.results || [];
+    if (spaces?.data?._links && spaces?.data?._links?.next) {
+        const nextUrl = spaces.data._links.next.replace('/wiki', ''); // /wiki present in BASE_UL as well, removing extra
+        const nextResults = await getSpaces(nextUrl);
+        results = results.concat(nextResults);
+    }
+    return results;
+}
+
 async function getSpaceId(space_key) { 
     const URL = `${BASE_URL}/api/v2/spaces?keys=${space_key}`;
     const spaces = await axios.get(URL, {headers: {Authorization: `Basic ${API_KEY}`}});
@@ -29,8 +42,8 @@ async function getAllPagesInSpace(spaceId, childPages, urlParams = 'limit=250') 
 	return asyncResp.data.results
 }
 
-async function getPagesInSpace(space_key) {
-    const space_id = await getSpaceId(space_key);
+async function getPagesInSpace(space_id) {
+    // const space_id = await getSpaceId(space_key);
     let pagearray = [];
     await getAllPagesInSpace(space_id, pagearray);
     //console.log("pages: ", pagearray);
@@ -46,8 +59,8 @@ async function getNhProperty(page_id, property_key) {
     return {page_id, nhconfig: response.data.results[0]};
 }
 
-async function getNhEnabledPages(SPACE_KEY) {
-    const pages = await getPagesInSpace(SPACE_KEY);
+async function getNhEnabledPages(space_id) {
+    const pages = await getPagesInSpace(space_id);
     let promiseArray = [];
     for (let page of pages) {
         promiseArray.push(getNhProperty(page.id, NH_KEY));
@@ -80,6 +93,7 @@ async function getPageData(page_id) {
 }
 
 module.exports = {
+    getSpaces,
     getSpaceId,
     getPagesInSpace,
     getNhProperty,
