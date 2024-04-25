@@ -10,7 +10,6 @@ npm install
 ```
 export BASE_URL=<Conflence instance base url>. Example https://rampatinaten.atlassian.net/wiki 
 export API_KEY=<basic auth api key>. Confluence [Guide](https://developer.atlassian.com/cloud/confluence/basic-auth-for-rest-apis/#supplying-basic-auth-headers) to create token
-export SPACE_KEY=<the space key to touch and find failed pages>. Example: NHC
 ```
 
 ### To run the script
